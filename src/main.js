@@ -7,5 +7,7 @@ import axios from 'axios'
 axios.defaults.baseURL = 'https://backend-inmanfinal-nf20.onrender.com'
 axios.defaults.withCredentials = true
 
+export default axios;
+
 const app = createApp(App)
 app.mount('#app')

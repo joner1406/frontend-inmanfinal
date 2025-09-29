@@ -4,7 +4,7 @@ import './style.css'
 import axios from 'axios'
 
 // Configure axios para conexión directa
-axios.defaults.baseURL = 'http://localhost:3001'
+axios.defaults.baseURL = 'https://backend-inmanfinal-nf20.onrender.com'
 axios.defaults.withCredentials = true
 
 const app = createApp(App)

@@ -1,6 +1,10 @@
 import { ref, computed } from 'vue'
 import axios from 'axios'
 
+// CONFIGURAR AXIOS AQUÍ TAMBIÉN
+axios.defaults.baseURL = 'https://backend-inmanfinal-nf20.onrender.com'
+axios.defaults.withCredentials = true
+
 const currentUser = ref(null)
 const userPermissions = ref({})
 const isAuthenticated = ref(false)
@@ -10,7 +14,7 @@ export const useAuth = () => {
     try {
       const response = await axios.post('/api/auth/login', credentials)
       console.log('Respuesta de login:', response.data);
-
+      
       if (response.data.success) {
         currentUser.value = response.data.user
         userPermissions.value = response.data.permissions || {}
@@ -47,7 +51,7 @@ export const useAuth = () => {
     try {
       const response = await axios.get('/api/auth/current-user')
       console.log('Respuesta de checkAuth:', response.data);
-
+      
       if (response.data.authenticated) {
         currentUser.value = response.data.user
         userPermissions.value = response.data.permissions || {}
@@ -75,7 +79,6 @@ export const useAuth = () => {
       { id: 'qr', name: 'Escáner QR', icon: 'fas fa-qrcode' },
     ]
 
-    // Si el usuario es un Aprendiz, solo mostrar Dashboard y Escáner QR
     const esAprendiz = currentUser.value?.perfil?.toLowerCase() === 'aprendiz';
     
     if (esAprendiz) {
@@ -84,7 +87,6 @@ export const useAuth = () => {
       );
     }
 
-    // Para otros roles, usar los módulos permitidos según sus permisos
     const userModules = userPermissions.value?.modules || [];
     return allModules.filter(module => 
       userModules.includes(module.id) || module.id === 'dashboard'

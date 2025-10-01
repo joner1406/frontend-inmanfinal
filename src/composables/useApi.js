@@ -1,9 +1,6 @@
 import { ref } from 'vue'
-import axios from 'axios'
+import axios from '../config/axios'
 
-// Configurar axios aquí también para asegurar que funcione
-axios.defaults.baseURL = 'https://backend-inmanfinal-nf20.onrender.com'
-axios.defaults.withCredentials = true
 
 export const useApi = () => {
   const loading = ref(false)

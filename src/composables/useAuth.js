@@ -1,9 +1,6 @@
 import { ref, computed } from 'vue'
-import axios from 'axios'
+import axios from '../config/axios'
 
-// CONFIGURAR AXIOS AQUÍ TAMBIÉN
-axios.defaults.baseURL = 'https://backend-inmanfinal-nf20.onrender.com'
-axios.defaults.withCredentials = true
 
 const currentUser = ref(null)
 const userPermissions = ref({})
@@ -14,15 +11,15 @@ export const useAuth = () => {
     try {
       const response = await axios.post('/api/auth/login', credentials)
       console.log('Respuesta de login:', response.data);
-      
+
       if (response.data.success) {
         currentUser.value = response.data.user
         userPermissions.value = response.data.permissions || {}
         isAuthenticated.value = true
-        
+
         console.log('Usuario autenticado:', currentUser.value);
         console.log('Permisos:', userPermissions.value);
-        
+
         return { success: true }
       } else {
         return { success: false, error: response.data.error }
@@ -51,15 +48,15 @@ export const useAuth = () => {
     try {
       const response = await axios.get('/api/auth/current-user')
       console.log('Respuesta de checkAuth:', response.data);
-      
+
       if (response.data.authenticated) {
         currentUser.value = response.data.user
         userPermissions.value = response.data.permissions || {}
         isAuthenticated.value = true
-        
+
         console.log('Usuario verificado:', currentUser.value);
         console.log('Permisos:', userPermissions.value);
-        
+
         return true
       }
       return false
@@ -80,15 +77,15 @@ export const useAuth = () => {
     ]
 
     const esAprendiz = currentUser.value?.perfil?.toLowerCase() === 'aprendiz';
-    
+
     if (esAprendiz) {
-      return allModules.filter(module => 
+      return allModules.filter(module =>
         module.id === 'dashboard' || module.id === 'qr'
       );
     }
 
     const userModules = userPermissions.value?.modules || [];
-    return allModules.filter(module => 
+    return allModules.filter(module =>
       userModules.includes(module.id) || module.id === 'dashboard'
     );
   })
